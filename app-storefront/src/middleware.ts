@@ -104,6 +104,11 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  // Pass /app (exact) through to backend by redirecting to /app/
+  if (request.nextUrl.pathname === "/app") {
+    return NextResponse.redirect(new URL("/app/", request.url))
+  }
+
   let redirectUrl = request.nextUrl.href
 
   let response = NextResponse.redirect(redirectUrl, 307)
