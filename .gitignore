@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Claude Code config (may contain sensitive context)
+.claude/
+
+# Build artifacts at root level
+.next/
+node_modules/
+
+# Editor
+.vscode/
+.idea/

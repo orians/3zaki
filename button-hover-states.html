@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button Hover Explorations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f5f9;
+      padding: 48px 24px 80px;
+    }
+
+    h1 {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* ─── Option card ─── */
+    .option {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      max-width: 720px;
+      margin: 0 auto 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+
+    .option-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .option-letter {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      width: 16px;
+      flex-shrink: 0;
+    }
+
+    .option-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .option-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-left: 2px;
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ════════════════════════════════════
+       BASE BUTTON — shared across all
+    ════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 32px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid #007ac2;
+      outline-offset: 3px;
+    }
+
+    .btn-icon { width: 129px; height: 52px; }
+
+    .btn-text {
+      height: 52px;
+      padding: 14px 20px;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 24px;
+      white-space: nowrap;
+      min-width: 96px;
+    }
+
+    /* ─── Variants ─── */
+    .btn-ghost            { background: #eef2f5; }
+    .btn-ghost .icon      { fill: #007ac2; }
+
+    .btn-primary          { background: #007ac2; }
+    .btn-primary .icon    { fill: white; }
+
+    .btn-outlined         { background: white; border: 2px solid #007ac2; }
+    .btn-outlined .icon   { fill: #007ac2; }
+
+    .btn-cta              { background: white; border: 2px solid #007ac2; color: #007ac2; }
+
+
+    /* ════════════════════════════════════
+       A — FLOAT
+       Lifts off with a brand-colored glow
+    ════════════════════════════════════ */
+    .v-float {
+      transition: transform 200ms ease, box-shadow 200ms ease, filter 150ms ease;
+    }
+    .v-float:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0, 122, 194, 0.28);
+      filter: brightness(0.94);
+    }
+
+
+    /* ════════════════════════════════════
+       B — PRESS
+       Sinks in, like a physical button
+    ════════════════════════════════════ */
+    .v-press {
+      transition: transform 80ms ease, filter 80ms ease, box-shadow 80ms ease;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+    }
+    .btn-primary.v-press  { box-shadow: 0 3px 0 #00568a; }
+    .btn-ghost.v-press    { box-shadow: 0 3px 0 #c8d2db; }
+    .btn-outlined.v-press { box-shadow: 0 3px 0 #007ac2; }
+    .btn-cta.v-press      { box-shadow: 0 3px 0 #007ac2; }
+
+    .v-press:hover {
+      transform: translateY(2px);
+      filter: brightness(0.9);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1) !important;
+    }
+    .btn-primary.v-press:hover  { box-shadow: 0 1px 0 #00568a !important; }
+    .btn-ghost.v-press:hover    { box-shadow: 0 1px 0 #c8d2db !important; }
+    .btn-outlined.v-press:hover { box-shadow: 0 1px 0 #007ac2 !important; }
+    .btn-cta.v-press:hover      { box-shadow: 0 1px 0 #007ac2 !important; }
+
+
+    /* ════════════════════════════════════
+       C — SWEEP
+       Dark overlay wipes in from the left
+    ════════════════════════════════════ */
+    .v-sweep {
+      overflow: hidden;
+      transition: none;
+    }
+    .v-sweep::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: inherit;
+      transform: translateX(-100%);
+      transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .v-sweep:hover::before {
+      transform: translateX(0);
+    }
+    .v-sweep svg,
+    .v-sweep .btn-label {
+      position: relative;
+      z-index: 1;
+    }
+
+
+    /* ════════════════════════════════════
+       D — BLOOM
+       Springs outward with elastic easing
+    ════════════════════════════════════ */
+    .v-bloom {
+      transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                  filter 150ms ease;
+    }
+    .v-bloom:hover {
+      transform: scale(1.07);
+      filter: brightness(0.94);
+    }
+
+
+    /* ════════════════════════════════════
+       E — NUDGE
+       Icon (and text) slide right
+    ════════════════════════════════════ */
+    .v-nudge {
+      transition: filter 150ms ease;
+    }
+    .v-nudge:hover {
+      filter: brightness(0.93);
+    }
+    .v-nudge svg,
+    .v-nudge .btn-label {
+      transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .v-nudge:hover svg,
+    .v-nudge:hover .btn-label {
+      transform: translateX(5px);
+    }
+
+
+    /* ════════════════════════════════════
+       F — HALO
+       A ring radiates outward from the edge
+    ════════════════════════════════════ */
+    .v-halo {
+      transition: filter 150ms ease;
+    }
+    .v-halo:hover {
+      filter: brightness(0.93);
+    }
+    .v-halo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50px;
+      box-shadow: 0 0 0 0 rgba(0, 122, 194, 0.35);
+      transition: box-shadow 300ms ease;
+      pointer-events: none;
+    }
+    .v-halo:hover::after {
+      box-shadow: 0 0 0 7px rgba(0, 122, 194, 0);
+    }
+
+
+    /* ════════════════════════════════════
+       G — SHIMMER
+       Light streak sweeps across on hover
+    ════════════════════════════════════ */
+    .v-shimmer {
+      overflow: hidden;
+      transition: filter 150ms ease;
+    }
+    .v-shimmer:hover {
+      filter: brightness(0.95);
+    }
+    .v-shimmer::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -60%;
+      width: 40%;
+      height: 140%;
+      background: linear-gradient(
+        105deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.45) 50%,
+        rgba(255,255,255,0) 100%
+      );
+      border-radius: 50%;
+      transform: skewX(-15deg) translateX(0);
+      transition: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .v-shimmer:hover::before {
+      animation: shimmer-sweep 400ms ease forwards;
+    }
+    @keyframes shimmer-sweep {
+      from { transform: skewX(-15deg) translateX(0); }
+      to   { transform: skewX(-15deg) translateX(500%); }
+    }
+    .v-shimmer svg,
+    .v-shimmer .btn-label {
+      position: relative;
+      z-index: 2;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Button Hover Explorations</h1>
+
+  <!-- A: Float -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">A</span>
+      <span class="option-name">Float</span>
+      <span class="option-desc">— lifts off with a brand-colored glow</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-float" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-float" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-float" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-float"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- B: Press -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">B</span>
+      <span class="option-name">Press</span>
+      <span class="option-desc">— sinks down like a physical button</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-press" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-press" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-press" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-press"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- C: Sweep -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">C</span>
+      <span class="option-name">Sweep</span>
+      <span class="option-desc">— dark overlay wipes in from the left</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-sweep" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-sweep" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-sweep" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-sweep"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- D: Bloom -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">D</span>
+      <span class="option-name">Bloom</span>
+      <span class="option-desc">— springs outward with elastic easing</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-bloom" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-bloom" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-bloom" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-bloom"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- E: Nudge -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">E</span>
+      <span class="option-name">Nudge</span>
+      <span class="option-desc">— icon and text spring to the right</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-nudge" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-nudge" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-nudge" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-nudge"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- F: Halo -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">F</span>
+      <span class="option-name">Halo</span>
+      <span class="option-desc">— a ring pulses outward from the edge</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-halo" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-halo" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-halo" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-halo"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+  <!-- G: Shimmer -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-letter">G</span>
+      <span class="option-name">Shimmer</span>
+      <span class="option-desc">— a light streak sweeps across the surface</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-icon btn-ghost v-shimmer" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-primary v-shimmer" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-icon btn-outlined v-shimmer" aria-label="Back">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <button class="btn btn-text btn-cta v-shimmer"><span class="btn-label">Start now</span></button>
+    </div>
+  </div>
+
+</body>
+</html>
