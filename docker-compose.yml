@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  zaki-db:
+    image: postgres:15-alpine
+    container_name: zaki-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: zakidbpass
+      POSTGRES_DB: medusa
+    volumes:
+      - zaki_db_data:/var/lib/postgresql/data
+    networks:
+      - web
+
+  zaki-redis:
+    image: redis:7-alpine
+    container_name: zaki-redis
+    restart: unless-stopped
+    networks:
+      - web
+
+  zaki-backend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: zaki-backend
+    restart: unless-stopped
+    env_file: ./app/.env
+    volumes:
+      - zaki_static:/app/static
+    depends_on:
+      - zaki-db
+      - zaki-redis
+    networks:
+      - web
+
+  zaki-storefront:
+    build:
+      context: ./app-storefront
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_20cf2a9314000fcdfef9a747475dc998c29b2ebcadf9443e0e8244a22ed6ea9f
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://orians.world
+        NEXT_PUBLIC_SANITY_PROJECT_ID: 3ehwpcpg
+        NEXT_PUBLIC_SANITY_DATASET: production
+        NEXT_PUBLIC_DEFAULT_REGION: lv
+    container_name: zaki-storefront
+    restart: unless-stopped
+    env_file: ./app-storefront/.env
+    depends_on:
+      - zaki-backend
+    networks:
+      - web
+
+volumes:
+  zaki_db_data:
+  zaki_static:
+
+networks:
+  web:
+    external: true
