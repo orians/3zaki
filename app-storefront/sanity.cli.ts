@@ -5,5 +5,8 @@ export default defineCliConfig({
     projectId: "3ehwpcpg",
     dataset: "production",
   },
-  studioHost: "3zaki",
+  studioHost: "zaki",
+  deployment: {
+    appId: "j4xhyqp8uug1jfk6mfo4sryu",
+  },
 })
