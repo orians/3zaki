@@ -149,4 +149,8 @@ export const privateLabelPageSchema = defineType({
       group: "cta",
     }),
   ],
+  preview: {
+    select: { heading: "heroHeading.en" },
+    prepare: ({ heading }) => ({ title: heading || "Private Label Page" }),
+  },
 })

@@ -67,4 +67,8 @@ export const productPageSchema = defineType({
     defineField({ ...loc("relatedHeading", "Related Products Heading"), group: "related" }),
     defineField({ ...locText("relatedSubheading", "Related Products Subheading"), group: "related" }),
   ],
+  preview: {
+    select: { tabLabel: "productInfoTabLabel.en" },
+    prepare: ({ tabLabel }) => ({ title: tabLabel || "Product Page" }),
+  },
 })

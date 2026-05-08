@@ -83,4 +83,8 @@ export const siteSettingsSchema = defineType({
       ],
     }),
   ],
+  preview: {
+    select: { storeName: "storeName.en" },
+    prepare: ({ storeName }) => ({ title: storeName || "Site Settings" }),
+  },
 })

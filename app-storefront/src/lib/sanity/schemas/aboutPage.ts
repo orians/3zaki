@@ -61,15 +61,6 @@ export const aboutPageSchema = defineType({
             { name: "lv", title: "Latvian", type: "string" },
           ],
         },
-        {
-          name: "line3",
-          title: "Line 3",
-          type: "object",
-          fields: [
-            { name: "en", title: "English", type: "string" },
-            { name: "lv", title: "Latvian", type: "string" },
-          ],
-        },
       ],
     }),
 
@@ -270,4 +261,8 @@ export const aboutPageSchema = defineType({
       group: "contact",
     }),
   ],
+  preview: {
+    select: { line1: "heroHeadline.line1.en" },
+    prepare: ({ line1 }) => ({ title: line1 || "About Page" }),
+  },
 })
