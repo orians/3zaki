@@ -31,6 +31,8 @@ export default async function Home(props: {
   if (!region) return null
 
   const lang = currentLocale?.split("-")[0]?.toLowerCase() ?? "en"
+  const t = (field: { en: string; lv: string } | undefined, fallbackEn: string, fallbackLv: string) =>
+    lang === "lv" ? (field?.lv || fallbackLv) : (field?.en || fallbackEn)
 
   const {
     response: { products },
@@ -45,10 +47,8 @@ export default async function Home(props: {
       {/* Hero: decoration + heading */}
       <div className="flex flex-col items-center gap-16">
         <HeroDecoration heroDecoration={siteSettings?.heroDecoration} />
-        <h1
-          className="type-xl text-center text-[#1d1d16]"
-        >
-          {lang === "lv" ? "Paši labākie cidoniju dzērieni" : "The best quince drinks"}
+        <h1 className="type-xl text-center text-[#1d1d16]">
+          {t(hero?.heroHeading, "The best quince drinks", "Paši labākie cidoniju dzērieni")}
         </h1>
       </div>
 
@@ -66,15 +66,13 @@ export default async function Home(props: {
         <div className="px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-2xl">
             <h2 className="type-xl text-white mb-8">
-              {lang === "lv" ? "Vēlies pats savu sidru?" : "Want your own cider?"}
+              {t(hero?.privateLabelHeading, "Want your own cider?", "Vēlies pats savu sidru?")}
             </h2>
             <p className="type-lg text-white/60 mb-6">
-              {lang === "lv"
-                ? "Mēs nodrošinam ražošanu, tu izplatīšanu"
-                : "We handle production, you handle distribution"}
+              {t(hero?.privateLabelDescription, "We handle production, you handle distribution", "Mēs nodrošinam ražošanu, tu izplatīšanu")}
             </p>
             <LocalizedClientLink href="/private-label" className="type-md text-white/70 hover:text-white transition-colors">
-              {lang === "lv" ? "Uzzināt vairāk" : "Learn more"}
+              {t(hero?.privateLabelCtaText, "Learn more", "Uzzināt vairāk")}
             </LocalizedClientLink>
           </div>
         </div>
@@ -84,17 +82,13 @@ export default async function Home(props: {
       <div className="grid grid-cols-1 md:grid-cols-[448fr_544fr] gap-32">
         <div className="flex flex-col gap-4 justify-center">
           <h2 className="type-lg">
-            {lang === "lv"
-              ? "Ģimenes uzņēmums, kas ražo dzērienus no pašu saimniecībā audzētām cidonijām"
-              : "A family business making drinks from home-grown quinces"}
+            {t(hero?.aboutHeading, "A family business making drinks from home-grown quinces", "Ģimenes uzņēmums, kas ražo dzērienus no pašu saimniecībā audzētām cidonijām")}
           </h2>
           <p className="type-md text-ui-fg-subtle">
-            {lang === "lv"
-              ? "Mūsu sidrs ir unikāls Latvijas produkts – nekur citur pasaulē sidrs netiek gatavots no cidonijām. Mēs lepojamies ar to, ka mūsu sidrs ir skābi sauss, ar izteiktu raksturu un svaigumu – tas ir retums tirgū, kurā pārsvarā sastopami saldie sidri."
-              : "Our cider is a unique Latvian product — nowhere else in the world is cider made from quinces. We're proud that our cider is sharply dry, with a distinctive character and freshness — a rarity in a market dominated by sweet ciders."}
+            {t(hero?.aboutBody, "Our cider is a unique Latvian product — nowhere else in the world is cider made from quinces. We're proud that our cider is sharply dry, with a distinctive character and freshness — a rarity in a market dominated by sweet ciders.", "Mūsu sidrs ir unikāls Latvijas produkts – nekur citur pasaulē sidrs netiek gatavots no cidonijām. Mēs lepojamies ar to, ka mūsu sidrs ir skābi sauss, ar izteiktu raksturu un svaigumu – tas ir retums tirgū, kurā pārsvarā sastopami saldie sidri.")}
           </p>
           <LocalizedClientLink href="/about" className="text-[#3067e1] font-medium">
-            {lang === "lv" ? "Uzzināt vairāk par mums" : "Learn more about us"}
+            {t(hero?.aboutCtaText, "Learn more about us", "Uzzināt vairāk par mums")}
           </LocalizedClientLink>
         </div>
         <div className="relative aspect-[4/3] overflow-hidden bg-[#d4cfc4]">

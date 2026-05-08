@@ -1,54 +1,44 @@
 import { defineField, defineType } from "sanity"
 
+const localized = (name: string, title: string, type: "string" | "text" = "string") =>
+  defineField({
+    name,
+    title,
+    type: "object",
+    fields: [
+      { name: "en", title: "English", type },
+      { name: "lv", title: "Latvian", type },
+    ],
+  })
+
 export const heroSchema = defineType({
   name: "hero",
-  title: "Hero Banner",
+  title: "Homepage",
   type: "document",
+  groups: [
+    { name: "hero", title: "Hero" },
+    { name: "privateLabel", title: "Private Label CTA" },
+    { name: "about", title: "About Teaser" },
+  ],
   fields: [
-    defineField({
-      name: "heading",
-      title: "Heading",
-      type: "object",
-      fields: [
-        { name: "en", title: "English", type: "string" },
-        { name: "lv", title: "Latvian", type: "string" },
-      ],
-    }),
-    defineField({
-      name: "subheading",
-      title: "Subheading",
-      type: "object",
-      fields: [
-        { name: "en", title: "English", type: "string" },
-        { name: "lv", title: "Latvian", type: "string" },
-      ],
-    }),
-    defineField({
-      name: "ctaText",
-      title: "CTA Button Text",
-      type: "object",
-      fields: [
-        { name: "en", title: "English", type: "string" },
-        { name: "lv", title: "Latvian", type: "string" },
-      ],
-    }),
-    defineField({
-      name: "ctaHref",
-      title: "CTA Button Link",
-      type: "string",
-      description: "e.g. /store or /collections/new-arrivals",
-    }),
-    defineField({
-      name: "backgroundImage",
-      title: "Background Image",
-      type: "image",
-      options: { hotspot: true },
-    }),
+    // Hero
+    { ...localized("heroHeading", "Heading"), group: "hero" },
+
+    // Private Label CTA
+    { ...localized("privateLabelHeading", "Heading"), group: "privateLabel" },
+    { ...localized("privateLabelDescription", "Description"), group: "privateLabel" },
+    { ...localized("privateLabelCtaText", "CTA Link Text"), group: "privateLabel" },
+
+    // About Teaser
+    { ...localized("aboutHeading", "Heading"), group: "about" },
+    { ...localized("aboutBody", "Body", "text"), group: "about" },
+    { ...localized("aboutCtaText", "CTA Link Text"), group: "about" },
     defineField({
       name: "aboutImage",
-      title: "About Teaser Image",
+      title: "Image",
       type: "image",
-      description: "Photo shown next to the about-us blurb on the home page.",
+      group: "about",
+      description: "Photo shown next to the about-us blurb.",
       options: { hotspot: true },
       fields: [
         defineField({

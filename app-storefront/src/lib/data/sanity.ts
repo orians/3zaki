@@ -8,11 +8,13 @@ export type LocalizedString = {
 }
 
 export type HeroData = {
-  heading: LocalizedString
-  subheading: LocalizedString
-  ctaText: LocalizedString
-  ctaHref: string
-  backgroundImage: { asset: { _ref: string }; hotspot?: object } | null
+  heroHeading: LocalizedString
+  privateLabelHeading: LocalizedString
+  privateLabelDescription: LocalizedString
+  privateLabelCtaText: LocalizedString
+  aboutHeading: LocalizedString
+  aboutBody: LocalizedString
+  aboutCtaText: LocalizedString
   aboutImage: { asset: { _ref: string; _type: string }; alt?: string; hotspot?: object } | null
 }
 
@@ -80,6 +82,10 @@ export type PrivateLabelPageData = {
   ctaEmail: string
 }
 
+export type StorePageData = {
+  intro: LocalizedString
+}
+
 export type ProductPageData = {
   productInfoTabLabel: LocalizedString
   shippingTabLabel: LocalizedString
@@ -96,6 +102,7 @@ const HERO_QUERY = defineQuery(`*[_type == "hero" && _id == "singleton-hero"][0]
 const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id == "singleton-siteSettings"][0]`)
 const ABOUT_PAGE_QUERY = defineQuery(`*[_type == "aboutPage" && _id == "singleton-aboutPage"][0]`)
 const PRIVATE_LABEL_PAGE_QUERY = defineQuery(`*[_type == "privateLabelPage" && _id == "singleton-privateLabelPage"][0]`)
+const STORE_PAGE_QUERY = defineQuery(`*[_type == "storePage"][0]`)
 const PRODUCT_PAGE_QUERY = defineQuery(`*[_type == "productPage"][0]`)
 
 export async function getHero(): Promise<HeroData | null> {
@@ -116,6 +123,11 @@ export async function getAboutPage(): Promise<AboutPageData | null> {
 export async function getPrivateLabelPage(): Promise<PrivateLabelPageData | null> {
   const { data } = await sanityFetch({ query: PRIVATE_LABEL_PAGE_QUERY })
   return data as PrivateLabelPageData | null
+}
+
+export async function getStorePage(): Promise<StorePageData | null> {
+  const { data } = await sanityFetch({ query: STORE_PAGE_QUERY })
+  return data as StorePageData | null
 }
 
 export async function getProductPage(): Promise<ProductPageData | null> {
