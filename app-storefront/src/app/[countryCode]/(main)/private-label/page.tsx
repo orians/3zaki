@@ -1,10 +1,8 @@
 import { Metadata } from "next"
-import type { ReactNode } from "react"
 import Image from "next/image"
 import { getPrivateLabelPage } from "@lib/data/sanity"
 import { getLocale } from "@lib/data/locale-actions"
 import { urlFor } from "@lib/sanity/image"
-import { Mail, FlaskConical, Palette, Truck } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Private Label — 3 Zaķi",
@@ -18,13 +16,6 @@ function t(
 ): string {
   if (!field) return fallback
   return field[lang as "en" | "lv"] ?? field.en ?? fallback
-}
-
-const processIcons: Record<string, ReactNode> = {
-  "01": <Mail size={24} strokeWidth={2} />,
-  "02": <FlaskConical size={24} strokeWidth={2} />,
-  "03": <Palette size={24} strokeWidth={2} />,
-  "04": <Truck size={24} strokeWidth={2} />,
 }
 
 export default async function PrivateLabelPage() {
@@ -57,16 +48,6 @@ export default async function PrivateLabelPage() {
         { number: "02", title: "Custom packaging", body: "Label design, bottle format, capsule colour — we coordinate the full packaging process with our suppliers." },
         { number: "03", title: "Consistent quality", body: "Every private label batch goes through the same tasting and quality checks as our own product." },
         { number: "04", title: "Fast turnaround", body: "From approved artwork to delivery, most orders are fulfilled within 6 weeks." },
-      ]
-
-  const processHeading = t(data?.processHeading, lang, "Four steps from enquiry to delivery")
-  const processSteps = data?.processSteps?.length
-    ? data.processSteps.map((s) => ({ number: s.number, title: t(s.title, lang), body: t(s.body, lang) }))
-    : [
-        { number: "01", title: "Get in touch", body: "Send us an email with your requirements — volume, timeline, and any packaging ideas you have." },
-        { number: "02", title: "Sample approval", body: "We send samples for tasting. Once approved, we agree on the final spec." },
-        { number: "03", title: "Artwork & production", body: "Your designer or ours creates the label artwork. Once approved, we begin production." },
-        { number: "04", title: "Delivery", body: "Your finished product is delivered to your door or collected from the farm." },
       ]
 
   const ctaHeading = t(data?.ctaHeading, lang, "Ready to talk?")
@@ -161,28 +142,6 @@ export default async function PrivateLabelPage() {
                   <h3 className="type-md-medium text-white mb-3">{item.title}</h3>
                   <p className="type-md text-white/60">{item.body}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section>
-        <div className="content-container py-20 md:py-28">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-14">
-            <h2 className="type-lg text-ui-fg-base">{processHeading}</h2>
-          </div>
-          <div className="flex flex-col divide-y divide-ui-border-base">
-            {processSteps.map((step) => (
-              <div key={step.number} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-24 py-8 items-start">
-                <div className="flex items-start gap-6">
-                  <div className="text-ui-fg-muted mt-0.5 flex-shrink-0">
-                    {processIcons[step.number] ?? <span className="type-md">{step.number}</span>}
-                  </div>
-                  <h3 className="type-md-medium text-ui-fg-base">{step.title}</h3>
-                </div>
-                <p className="type-md text-ui-fg-subtle">{step.body}</p>
               </div>
             ))}
           </div>
