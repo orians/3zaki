@@ -54,9 +54,24 @@ services:
     networks:
       - web
 
+  zaki-filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: zaki-filebrowser
+    volumes:
+      - /home/orians/shared:/srv
+      - filebrowser_db:/database
+    environment:
+      - FB_DATABASE=/database/filebrowser.db
+      - FB_ROOT=/srv
+      - FB_NOAUTH=false
+    networks:
+      - web
+    restart: unless-stopped
+
 volumes:
   zaki_db_data:
   zaki_static:
+  filebrowser_db:
 
 networks:
   web:

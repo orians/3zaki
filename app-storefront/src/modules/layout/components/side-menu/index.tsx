@@ -16,15 +16,15 @@ const SideMenuItems = {
   en: [
     { label: "Home", href: "/" },
     { label: "Drinks", href: "/store" },
-    { label: "About", href: "/about" },
     { label: "Private Label", href: "/private-label" },
+    { label: "About", href: "/about" },
     { label: "Cart", href: "/cart" },
   ],
   lv: [
     { label: "Sākums", href: "/" },
     { label: "Dzērieni", href: "/store" },
-    { label: "Par mums", href: "/about" },
     { label: "Private Label", href: "/private-label" },
+    { label: "Par mums", href: "/about" },
     { label: "Grozs", href: "/cart" },
   ],
 }

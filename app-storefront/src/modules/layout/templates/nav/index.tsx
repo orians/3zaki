@@ -16,13 +16,13 @@ import NavLanguageToggle from "@modules/layout/components/nav-language-toggle"
 const NAV_LINKS = {
   en: [
     { label: "Drinks", href: "/store" },
-    { label: "About", href: "/about" },
     { label: "Private Label", href: "/private-label" },
+    { label: "About", href: "/about" },
   ],
   lv: [
     { label: "Dzērieni", href: "/store" },
-    { label: "Par mums", href: "/about" },
     { label: "Private Label", href: "/private-label" },
+    { label: "Par mums", href: "/about" },
   ],
 }
 

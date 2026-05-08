@@ -52,6 +52,14 @@ export default defineConfig({
                   .documentId("singleton-privateLabelPage")
               ),
             S.listItem()
+              .title("Drinks Page")
+              .id("storePage")
+              .child(
+                S.document()
+                  .schemaType("storePage")
+                  .documentId("9bb46ecc-a74e-420d-9b93-0300a8dd4763")
+              ),
+            S.listItem()
               .title("Product Page")
               .id("productPage")
               .child(
